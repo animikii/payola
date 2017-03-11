@@ -95,7 +95,7 @@ var PayolaCheckout = {
 };
 
 if ('undefined' !== typeof Turbolinks) {
-    $(document).on('page:change', PayolaCheckout.initialize);
+    $(document).on('page:change turbolinks:load', PayolaCheckout.initialize);
 } else {
     $(document).ready(PayolaCheckout.initialize);
 }
