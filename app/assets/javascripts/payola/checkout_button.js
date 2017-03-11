@@ -12,7 +12,28 @@ var PayolaCheckout = {
 
         if (options.stripe_customer_id) {
           // If an existing Stripe customer id is specified, don't open the Stripe Checkout - just AJAX submit the form
-          PayolaCheckout.submitForm(form.attr('action'), { stripe_customer_id: options.stripe_customer_id }, options);
+          // add in a confirm before purcahse
+          swal({
+            title: "Please confirm your purchase...",
+            text: "Your card will be charged for the purchase of:\n" + options.description,
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#30638E",
+            cancelButtonText: "Cancel",
+            confirmButtonText: "Purchase",
+            closeOnConfirm: false
+          },
+          function(){
+            swal({
+              title: "Processing ...",
+              type: "success",
+              text: "Your purchase is being processed.",
+              showConfirmButton: false
+            });
+
+            PayolaCheckout.submitForm(form.attr('action'), { stripe_customer_id: options.stripe_customer_id }, options);
+          });
+
         } else {
           // Open a Stripe Checkout to collect the customer's billing details
           var handler = StripeCheckout.configure({
